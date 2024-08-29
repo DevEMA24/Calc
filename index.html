@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CGR Calculator</title>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,28 +16,28 @@
             <button id="pasteButton">Calculate Sales</button>
             <button id="resetButton">Reset</button>
 
-<!-- Horizontal layout for the three sections -->
-<div class="horizontal-sections">
-    <div class="cgr-section">
-        <h2>CGR Section</h2>
-        <p>Message Sales: <span id="messageSales">0</span></p>
-        <p>Tip Sales: <span id="tipSales">0</span></p>
-        <p>Total CGR Sales: <span id="totalCGR">0</span></p>
-    </div>
+            <!-- Horizontal layout for the three sections -->
+            <div class="horizontal-sections">
+                <div class="cgr-section">
+                    <h2>CGR Section</h2>
+                    <p>Message Sales: <span id="messageSales">0</span></p>
+                    <p>Tip Sales: <span id="tipSales">0</span></p>
+                    <p>Total CGR Sales: <span id="totalCGR">0</span></p>
+                </div>
 
-    <div class="non-cgr-section">
-        <h2>Non-CGR Section</h2>
-        <p>WM Sales: <span id="wmSales">0</span></p>
-        <p>PPV Sales: <span id="ppvSales">0</span></p>
-        <p>Post Sales: <span id="postSales">0</span></p>
-        <p>Total Non-CGR Sales: <span id="totalNonCGR">0</span></p>
-    </div>
+                <div class="non-cgr-section">
+                    <h2>Non-CGR Section</h2>
+                    <p>WM Sales: <span id="wmSales">0</span></p>
+                    <p>PPV Sales: <span id="ppvSales">0</span></p>
+                    <p>Post Sales: <span id="postSales">0</span></p>
+                    <p>Total Non-CGR Sales: <span id="totalNonCGR">0</span></p>
+                </div>
 
-    <div class="total-sales-section">
-        <h2>Total Sales</h2>
-        <p>Total Sales: <span id="totalSales">0</span></p>
-    </div>
-</div>
+                <div class="total-sales-section">
+                    <h2>Total Sales</h2>
+                    <p>Total Sales: <span id="totalSales">0</span></p>
+                </div>
+            </div>
 
             <div class="table-container">
                 <table id="salesData">
