@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #181818; /* Dark background */
+    color: #f0f0f0; /* Light text color */
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px; /* Adjusted width for better readability */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2c2c2c; /* Darker container background */
+    border-radius: 15px; /* Increased border radius for a softer look */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff; /* Pure white for the title */
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+textarea {
+    width: calc(100% - 30px); /* Ensure it fits within the container, accounting for padding */
+    height: 100px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background-color: #3a3a3a; /* Darker textarea background */
+    color: #f0f0f0;
+    margin-bottom: 20px;
+    font-family: inherit;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1e90ff; /* Bright blue accent color */
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+}
+
+button:hover {
+    background-color: #1c7ed6; /* Slightly darker blue on hover */
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 30px;
+}
+
+table th:nth-child(6),
+table td:nth-child(6),
+table th:nth-child(7),
+table td:nth-child(7) {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #3a3a3a; /* Darker background for table */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #555; /* Darker border color */
+    text-align: left;
+}
+
+th {
+    background-color: #444; /* Darker header background */
+    color: #fff; /* Light text color */
+    font-weight: bold;
+}
+
+td {
+    background-color: #2c2c2c; /* Darker background for cells */
+    color: #f0f0f0; /* Light text color */
+}
+
+/* Horizontal layout for CGR, Non-CGR, and Total Sales Sections */
+.horizontal-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Space between each section */
+    margin-top: 20px; /* Space above the horizontal sections */
+}
+
+.cgr-section, .non-cgr-section, .total-sales-section {
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #2c2c2c; /* Matching background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Consistent shadow */
+}
+
+.cgr-section h2, .non-cgr-section h2, .total-sales-section h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+}
+
+.cgr-section p, .non-cgr-section p, .total-sales-section p {
+    font-size: 16px;
+    color: #d1d1d1; /* Softer light color for text */
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #d1d1d1; /* Softer light color for text */
+}
