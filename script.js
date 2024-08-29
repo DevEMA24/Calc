@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const pasteArea = document.getElementById('pasteArea');
     const pasteButton = document.getElementById('pasteButton');
-    const pasteButton = document.getElementById('resetButton');
+    const resetButton = document.getElementById('resetButton'); // Corrected to resetButton
     const salesData = document.getElementById('salesData').querySelector('tbody');
 
     pasteButton.addEventListener('click', function() {
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Reset button functionality
-    document.getElementById('resetButton').addEventListener('click', function() {
+    resetButton.addEventListener('click', function() {
         location.reload(); // This will refresh the page
     });
 });
