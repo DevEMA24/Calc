@@ -107,3 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totalSales').innerText = totalSales.toFixed(2);
     }
 });
+
+document.getElementById('resetButton').addEventListener('click', function() {
+    location.reload(); // This will refresh the page
+});
+
+
