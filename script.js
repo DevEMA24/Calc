@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const pasteArea = document.getElementById('pasteArea');
     const pasteButton = document.getElementById('pasteButton');
+    const pasteButton = document.getElementById('resetButton');
     const salesData = document.getElementById('salesData').querySelector('tbody');
 
     pasteButton.addEventListener('click', function() {
