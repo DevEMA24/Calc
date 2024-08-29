@@ -106,10 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('totalSales').innerText = totalSales.toFixed(2);
     }
+
+    // Reset button functionality
+    document.getElementById('resetButton').addEventListener('click', function() {
+        location.reload(); // This will refresh the page
+    });
 });
-
-document.getElementById('resetButton').addEventListener('click', function() {
-    location.reload(); // This will refresh the page
-});
-
-
