@@ -6,18 +6,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const duplicateTotalCGR = document.getElementById('duplicateTotalCGR');
     const copyButton = document.getElementById('copyButton');
 
-    function sanitizeData(data) {
-        return data.replace(/\s+/g, ' ').replace(/\t+/g, '').trim(); // Replace multiple spaces/tabs with a single space and trim
+    function sanitizeInput(input) {
+        return input
+            .replace(/\t/g, ' ')          // Replace all tabs with a space
+            .replace(/\s+/g, ' ')         // Replace multiple spaces with a single space
+            .trim();                      // Trim spaces from the start and end of the string
     }
 
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
-        const rows = pastedData.split('\n').filter(row => row.trim() !== '');
+        const rows = pastedData.split('\n').filter(row => row.trim() !== ''); // Remove empty rows
 
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            let cells = row.split('\t').map(cell => sanitizeData(cell)); // Clean up spaces and tabs
+            // Split the row into cells, but limit to 5 splits
+            // This ensures that any tabs in the last column don't create extra cells
+            let cells = row.split('\t', 5).map(cell => sanitizeInput(cell));
 
             if (cells.length < 4) {
                 console.error('Invalid row format:', cells);
@@ -26,18 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const tr = document.createElement('tr');
 
+            // Add the first 4 columns
             for (let i = 0; i < 4; i++) {
                 const td = document.createElement('td');
                 td.textContent = cells[i];
                 tr.appendChild(td);
             }
 
+            // Handle the details column (index 4)
+            const details = cells[4] || '';
+            
             // Generate Identifier (I) column
-            const details = cells[4];
             const identifierCell = document.createElement('td');
             let identifier = "-";
             if (details) {
-                const firstWord = details.split(" ")[0];
+                const firstWord = sanitizeInput(details.split(" ")[0]);
                 identifier = firstWord.trim();
             }
             identifierCell.textContent = identifier;
@@ -45,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tr.appendChild(identifierCell);
 
             // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = cells[1]?.replace(/[^0-9.-]+/g, "").trim();
+            const amount1Text = sanitizeInput(cells[1]?.replace(/[^0-9.-]+/g, ""));
             const wmPpvCell = document.createElement('td');
             let wmPpv = "-";
 
@@ -79,9 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = salesData.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const amount3 = parseFloat(sanitizeData(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, ""))) || 0; // Amount 3
-            const identifier = sanitizeData(row.cells[5]?.textContent); // Identifier (I)
-            const wmPpv = sanitizeData(row.cells[6]?.textContent); // WM/PPV (J)
+            const amount3 = parseFloat(sanitizeInput(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, ""))) || 0; // Amount 3
+            const identifier = sanitizeInput(row.cells[5]?.textContent); // Identifier (I)
+            const wmPpv = sanitizeInput(row.cells[6]?.textContent); // WM/PPV (J)
 
             // Calculate CGR Sales
             if (identifier === 'Payment' && wmPpv === '-') {
