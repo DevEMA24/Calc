@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyButton = document.getElementById('copyButton');
 
     function sanitizeData(data) {
-        return data.replace(/\s+/g, ' ').trim(); // Replace multiple spaces or tabs with a single space and trim
+        return data.replace(/\s+/g, ' ').replace(/\t+/g, '').trim(); // Replace multiple spaces/tabs with a single space and trim
     }
 
     pasteButton.addEventListener('click', function() {
@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach((row) => {
             let cells = row.split('\t').map(cell => sanitizeData(cell)); // Clean up spaces and tabs
 
-            if (cells.length < 5) {
-                // Log the problem for debugging purposes.
+            if (cells.length < 4) {
                 console.error('Invalid row format:', cells);
                 return; // Skip invalid rows
             }
