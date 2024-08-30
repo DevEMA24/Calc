@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const pasteButton = document.getElementById('pasteButton');
     const resetButton = document.getElementById('resetButton');
     const salesData = document.getElementById('salesData').querySelector('tbody');
+    const duplicateTotalCGR = document.getElementById('duplicateTotalCGR');
+    const copyButton = document.getElementById('copyButton');
 
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
@@ -10,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         salesData.innerHTML = ''; // Clear any existing rows
 
-        rows.forEach((row, rowIndex) => {
+        rows.forEach((row) => {
             const cells = row.split('\t'); // Split by tab to separate cells
             const tr = document.createElement('tr');
 
@@ -55,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         calculateSales(); // Recalculate totals after pasting
+        triggerPulse(); // Trigger the pulse effect
     });
 
     function calculateSales() {
@@ -106,7 +109,29 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totalNonCGR').innerText = totalNonCGR.toFixed(2);
 
         document.getElementById('totalSales').innerText = totalSales.toFixed(2);
+
+        // Update the duplicate Total CGR Sales element
+        duplicateTotalCGR.innerText = totalCGR.toFixed(2);
     }
+
+    function triggerPulse() {
+        const cgrSection = document.querySelector('.duplicate-total-cgr-section');
+        cgrSection.classList.add('pulsing');
+        setTimeout(() => {
+            cgrSection.classList.remove('pulsing');
+        }, 3000); // Pulsing effect duration (3 pulses)
+    }
+    
+
+    // Copy button functionality
+    copyButton.addEventListener('click', function() {
+        const totalCGRText = duplicateTotalCGR.innerText;
+        navigator.clipboard.writeText(totalCGRText).then(() => {
+            alert('Total CGR Sales copied to clipboard!');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    });
 
     // Reset button functionality
     resetButton.addEventListener('click', function() {
