@@ -12,55 +12,59 @@ document.addEventListener('DOMContentLoaded', function() {
         
         salesData.innerHTML = ''; // Clear any existing rows
 
-        rows.forEach((row) => {
+        rows.forEach((row, rowIndex) => {
             const cells = row.split('\t'); // Split by tab to separate cells
-            const tr = document.createElement('tr');
 
-            // Add original data cells
-            cells.forEach((cell, index) => {
-                const td = document.createElement('td');
-                let textContent = cell.trim();
-                
-                // Clean up only the "Details" column (assumed to be the 5th column)
-                if (index === 4) {
-                    textContent = cleanDetails(textContent);
+            if (cells.length >= 4) {
+                const tr = document.createElement('tr');
+
+                cells.forEach((cell, index) => {
+                    const td = document.createElement('td');
+                    let textContent = cell.trim();
+
+                    // Clean up only the "Details" column (assumed to be the 5th column)
+                    if (index === 4) {
+                        textContent = cleanDetails(textContent);
+                    }
+
+                    td.textContent = textContent;
+                    tr.appendChild(td);
+                });
+
+                // Generate Identifier (I) column
+                const details = cells[4]?.trim();
+                const identifierCell = document.createElement('td');
+                let identifier = "-";
+                if (details) {
+                    const firstSpaceIndex = details.indexOf(" ");
+                    if (firstSpaceIndex !== -1) {
+                        identifier = details.substring(0, firstSpaceIndex);
+                    }
+                }
+                identifierCell.textContent = identifier;
+                tr.appendChild(identifierCell);
+
+                // Generate WM/PPV (J) column based on Amount 1
+                const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
+                const wmPpvCell = document.createElement('td');
+                let wmPpv = "-";
+
+                if (identifier === "Payment" && amount1Text) {
+                    const decimalPart = amount1Text.split('.')[1] || "00";
+                    if (decimalPart === "98") {
+                        wmPpv = "WM";
+                    } else if (["90", "91", "92", "93", "94", "95", "96", "97", "99"].includes(decimalPart)) {
+                        wmPpv = "PPV";
+                    }
                 }
 
-                td.textContent = textContent;
-                tr.appendChild(td);
-            });
+                wmPpvCell.textContent = wmPpv;
+                tr.appendChild(wmPpvCell);
 
-            // Generate Identifier (I) column
-            const details = cells[4]?.trim();
-            const identifierCell = document.createElement('td');
-            let identifier = "-";
-            if (details) {
-                const firstSpaceIndex = details.indexOf(" ");
-                if (firstSpaceIndex !== -1) {
-                    identifier = details.substring(0, firstSpaceIndex);
-                }
+                salesData.appendChild(tr);
+            } else {
+                console.log(`Row ${rowIndex + 1} skipped due to insufficient columns:`, cells);
             }
-            identifierCell.textContent = identifier;
-            tr.appendChild(identifierCell);
-
-            // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
-            const wmPpvCell = document.createElement('td');
-            let wmPpv = "-";
-
-            if (identifier === "Payment" && amount1Text) {
-                const decimalPart = amount1Text.split('.')[1] || "00";
-                if (decimalPart === "98") {
-                    wmPpv = "WM";
-                } else if (["90", "91", "92", "93", "94", "95", "96", "97", "99"].includes(decimalPart)) {
-                    wmPpv = "PPV";
-                }
-            }
-
-            wmPpvCell.textContent = wmPpv;
-            tr.appendChild(wmPpvCell);
-
-            salesData.appendChild(tr);
         });
 
         calculateSales(); // Recalculate totals after pasting
@@ -109,6 +113,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalCGR = messageSales + tipSales;
         const totalNonCGR = wmSales + ppvSales + postSales;
         const totalSales = totalCGR + totalNonCGR;
+
+        // Log calculated results for debugging
+        console.log(`Message Sales: ${messageSales}`);
+        console.log(`Tip Sales: ${tipSales}`);
+        console.log(`Total CGR: ${totalCGR}`);
+        console.log(`WM Sales: ${wmSales}`);
+        console.log(`PPV Sales: ${ppvSales}`);
+        console.log(`Post Sales: ${postSales}`);
+        console.log(`Total Non-CGR: ${totalNonCGR}`);
+        console.log(`Total Sales: ${totalSales}`);
 
         // Update the HTML elements with calculated values
         document.getElementById('messageSales').innerText = messageSales.toFixed(2);
