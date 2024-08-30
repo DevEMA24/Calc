@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t'); // Split by tab to separate cells
+            const cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Trim cells and replace multiple spaces/tabs with a single space
             const tr = document.createElement('tr');
 
             // Add original data cells
@@ -123,43 +123,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 
-// Copy button functionality
-copyButton.addEventListener('click', function() {
-    const totalCGRText = duplicateTotalCGR.innerText;
-    navigator.clipboard.writeText(totalCGRText).then(() => {
-        // Success: Text copied to clipboard, but no alert/notification
-    }).catch(err => {
-        console.error('Could not copy text: ', err);
+    // Copy button functionality
+    copyButton.addEventListener('click', function() {
+        const totalCGRText = duplicateTotalCGR.innerText;
+        navigator.clipboard.writeText(totalCGRText).then(() => {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerText = 'Copied to clipboard!';
+            
+            // Append the notification within the duplicate Total CGR Sales section
+            const duplicateSection = document.querySelector('.duplicate-total-cgr-section');
+            duplicateSection.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => duplicateSection.removeChild(notification), 500);
+            }, 3000); // Show the notification for 3 seconds
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
     });
-});
 
 
     // Reset button functionality
     resetButton.addEventListener('click', function() {
         location.reload(); // This will refresh the page
-    });
-});
-
-copyButton.addEventListener('click', function() {
-    const totalCGRText = duplicateTotalCGR.innerText;
-    navigator.clipboard.writeText(totalCGRText).then(() => {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.innerText = 'Copied to clipboard!';
-        
-        // Append the notification within the duplicate Total CGR Sales section
-        const duplicateSection = document.querySelector('.duplicate-total-cgr-section');
-        duplicateSection.appendChild(notification);
-
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 100);
-
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => duplicateSection.removeChild(notification), 500);
-        }, 3000); // Show the notification for 3 seconds
-    }).catch(err => {
-        console.error('Could not copy text: ', err);
     });
 });
