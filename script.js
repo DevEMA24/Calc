@@ -6,48 +6,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const duplicateTotalCGR = document.getElementById('duplicateTotalCGR');
     const copyButton = document.getElementById('copyButton');
 
-    function removeNonPrintableChars(str) {
-        return str.replace(/[\u200B-\u200D\uFEFF]/g, '');
-    }
-
-    function sanitizeInput(input) {
-        return removeNonPrintableChars(input.trim());
-    }
-
     pasteButton.addEventListener('click', function() {
-        const pastedData = removeNonPrintableChars(pasteArea.value.trim());
+        const pastedData = cleanData(pasteArea.value.trim());
         const rows = pastedData.split('\n');
         
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t').map(sanitizeInput); // Split by tab and sanitize each cell
+            const cells = row.split('\t'); // Split by tab to separate cells
             const tr = document.createElement('tr');
 
             // Add original data cells
             cells.forEach(cell => {
                 const td = document.createElement('td');
-                td.textContent = cell;
+                td.textContent = cell.trim();
                 tr.appendChild(td);
             });
 
             // Generate Identifier (I) column
-            const details = cells[4] || '';
+            const details = cells[4]?.trim();
             const identifierCell = document.createElement('td');
             let identifier = "-";
             if (details) {
                 const firstSpaceIndex = details.indexOf(" ");
                 if (firstSpaceIndex !== -1) {
                     identifier = details.substring(0, firstSpaceIndex);
-                } else {
-                    identifier = details; // If there's no space, use the entire details
                 }
             }
             identifierCell.textContent = identifier;
             tr.appendChild(identifierCell);
 
             // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = (cells[1] || '').replace(/[^0-9.-]+/g, "");
+            const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
             const wmPpvCell = document.createElement('td');
             let wmPpv = "-";
 
@@ -69,6 +59,14 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateSales(); // Recalculate totals after pasting
         triggerPulse(); // Trigger the pulse effect
     });
+
+    function cleanData(data) {
+        // Replace non-printable characters with a visible placeholder or remove them
+        return data.replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+                   .replace(/[\r\n\t]/g, ' ')
+                   .replace(/\s+/g, ' ')
+                   .trim();
+    }
 
     function calculateSales() {
         let messageSales = 0;
