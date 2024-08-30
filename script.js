@@ -13,18 +13,29 @@ document.addEventListener('DOMContentLoaded', function() {
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Trim cells and replace multiple spaces/tabs with a single space
+            // Split by tabs and trim any excess whitespace
+            const cells = row.split('\t').map(cell => cell.trim());
+            
+            // Ensure there are no empty or malformed rows
+            if (cells.length < 4) return;
+
             const tr = document.createElement('tr');
 
             // Add original data cells
-            cells.forEach(cell => {
+            cells.forEach((cell, index) => {
                 const td = document.createElement('td');
-                td.textContent = cell.trim();
+                td.textContent = cell;
+
+                // Hide Identifier and WM/PPV columns
+                if (index === 5 || index === 6) {
+                    td.style.display = 'none';
+                }
+                
                 tr.appendChild(td);
             });
 
             // Generate Identifier (I) column
-            const details = cells[4]?.trim();
+            const details = cells[4];
             const identifierCell = document.createElement('td');
             let identifier = "-";
             if (details) {
@@ -34,10 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             identifierCell.textContent = identifier;
+            identifierCell.style.display = 'none'; // Hide Identifier column
             tr.appendChild(identifierCell);
 
             // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
+            const amount1Text = cells[1]?.replace(/[^0-9.-]+/g, "");
             const wmPpvCell = document.createElement('td');
             let wmPpv = "-";
 
@@ -51,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             wmPpvCell.textContent = wmPpv;
+            wmPpvCell.style.display = 'none'; // Hide WM/PPV column
             tr.appendChild(wmPpvCell);
 
             salesData.appendChild(tr);
@@ -121,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
             cgrSection.classList.remove('pulsing');
         }, 3000); // Pulsing effect duration (3 pulses)
     }
-    
 
     // Copy button functionality
     copyButton.addEventListener('click', function() {
@@ -147,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Could not copy text: ', err);
         });
     });
-
 
     // Reset button functionality
     resetButton.addEventListener('click', function() {
