@@ -8,35 +8,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
-        const rows = pastedData.split('\n').filter(row => row.trim() !== ''); // Remove empty rows
-        
+        const rows = pastedData.split('\n').filter(row => row.trim() !== '');
+
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Replace multiple spaces/tabs with a single space and trim
-            
-            // Ensure there are no empty or malformed rows
-            if (cells.length < 4) return;
+            let cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Clean up spaces and tabs
+
+            // Ensure the row has at least 5 cells (to cover 'Details' and potential hidden columns)
+            if (cells.length < 5) return;
 
             const tr = document.createElement('tr');
 
             // Add original data cells
-            cells.forEach((cell, index) => {
+            for (let i = 0; i < 4; i++) {
                 const td = document.createElement('td');
-                td.textContent = cell;
-                
+                td.textContent = cells[i];
                 tr.appendChild(td);
-            });
+            }
 
             // Generate Identifier (I) column
             const details = cells[4];
             const identifierCell = document.createElement('td');
             let identifier = "-";
             if (details && details.trim()) {
-                const firstSpaceIndex = details.indexOf(" ");
-                if (firstSpaceIndex !== -1) {
-                    identifier = details.substring(0, firstSpaceIndex).trim();
-                }
+                const firstWord = details.split(" ")[0];
+                identifier = firstWord.trim();
             }
             identifierCell.textContent = identifier;
             identifierCell.style.display = 'none'; // Hide Identifier column
