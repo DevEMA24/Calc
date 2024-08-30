@@ -7,70 +7,69 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyButton = document.getElementById('copyButton');
 
     pasteButton.addEventListener('click', function() {
-        const pastedData = cleanData(pasteArea.value.trim());
-        const rows = pastedData.split('\n').filter(row => row.trim() !== ''); // Split by line and remove empty rows
+        const pastedData = pasteArea.value.trim();
+        const rows = pastedData.split('\n');
         
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split(/\s+/); // Split by whitespace (handles tabs, spaces, etc.)
+            const cells = row.split('\t'); // Split by tab to separate cells
             const tr = document.createElement('tr');
 
-            // Ensure we have the expected number of columns (at least 4)
-            if (cells.length >= 4) {
-                // Add original data cells
-                cells.slice(0, 4).forEach(cell => {
-                    const td = document.createElement('td');
-                    td.textContent = cell.trim();
-                    tr.appendChild(td);
-                });
-
-                // Generate Identifier (I) column
-                const details = cells[4]?.trim();
-                const identifierCell = document.createElement('td');
-                let identifier = "-";
-                if (details) {
-                    const firstSpaceIndex = details.indexOf(" ");
-                    if (firstSpaceIndex !== -1) {
-                        identifier = details.substring(0, firstSpaceIndex);
-                    }
-                }
-                identifierCell.textContent = identifier;
-                tr.appendChild(identifierCell);
-
-                // Generate WM/PPV (J) column based on Amount 1
-                const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
-                const wmPpvCell = document.createElement('td');
-                let wmPpv = "-";
-
-                if (identifier === "Payment" && amount1Text) {
-                    const decimalPart = amount1Text.split('.')[1] || "00";
-                    if (decimalPart === "98") {
-                        wmPpv = "WM";
-                    } else if (["90", "91", "92", "93", "94", "95", "96", "97", "99"].includes(decimalPart)) {
-                        wmPpv = "PPV";
-                    }
+            // Add original data cells
+            cells.forEach((cell, index) => {
+                const td = document.createElement('td');
+                let textContent = cell.trim();
+                
+                // Clean up only the "Details" column (assumed to be the 5th column)
+                if (index === 4) {
+                    textContent = cleanDetails(textContent);
                 }
 
-                wmPpvCell.textContent = wmPpv;
-                tr.appendChild(wmPpvCell);
+                td.textContent = textContent;
+                tr.appendChild(td);
+            });
 
-                salesData.appendChild(tr);
-            } else {
-                console.warn('Skipped row due to insufficient columns:', cells);
+            // Generate Identifier (I) column
+            const details = cells[4]?.trim();
+            const identifierCell = document.createElement('td');
+            let identifier = "-";
+            if (details) {
+                const firstSpaceIndex = details.indexOf(" ");
+                if (firstSpaceIndex !== -1) {
+                    identifier = details.substring(0, firstSpaceIndex);
+                }
             }
+            identifierCell.textContent = identifier;
+            tr.appendChild(identifierCell);
+
+            // Generate WM/PPV (J) column based on Amount 1
+            const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
+            const wmPpvCell = document.createElement('td');
+            let wmPpv = "-";
+
+            if (identifier === "Payment" && amount1Text) {
+                const decimalPart = amount1Text.split('.')[1] || "00";
+                if (decimalPart === "98") {
+                    wmPpv = "WM";
+                } else if (["90", "91", "92", "93", "94", "95", "96", "97", "99"].includes(decimalPart)) {
+                    wmPpv = "PPV";
+                }
+            }
+
+            wmPpvCell.textContent = wmPpv;
+            tr.appendChild(wmPpvCell);
+
+            salesData.appendChild(tr);
         });
 
         calculateSales(); // Recalculate totals after pasting
         triggerPulse(); // Trigger the pulse effect
     });
 
-    function cleanData(data) {
-        // Replace non-printable characters with a space or remove them
-        return data.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ')  // Non-printable characters
-                   .replace(/[\r\n\t]/g, ' ')  // CR, LF, and TAB characters replaced with space
-                   .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
-                   .trim();
+    function cleanDetails(details) {
+        // Remove non-printable characters (e.g., CR, LF, and TAB) at the end of the string
+        return details.replace(/[\u0000-\u001F\u007F-\u009F]+$/g, '').trim();
     }
 
     function calculateSales() {
