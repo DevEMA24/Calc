@@ -8,13 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
-        const rows = pastedData.split('\n');
+        const rows = pastedData.split('\n').filter(row => row.trim() !== ''); // Remove empty rows
         
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            // Split by tabs and trim any excess whitespace
-            const cells = row.split('\t').map(cell => cell.trim());
+            const cells = row.split('\t').map(cell => cell.trim()); // Trim all cells
             
             // Ensure there are no empty or malformed rows
             if (cells.length < 4) return;
@@ -25,11 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
             cells.forEach((cell, index) => {
                 const td = document.createElement('td');
                 td.textContent = cell;
-
-                // Hide Identifier and WM/PPV columns
-                if (index === 5 || index === 6) {
-                    td.style.display = 'none';
-                }
                 
                 tr.appendChild(td);
             });
