@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t').map(cell => cell.trim()); // Trim all cells
+            const cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Replace multiple spaces/tabs with a single space and trim
             
             // Ensure there are no empty or malformed rows
             if (cells.length < 4) return;
