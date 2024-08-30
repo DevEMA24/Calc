@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t').map(cell => cell.trim()); // Split by tab and trim cells
+            const cells = row.split('\t'); // Split by tab to separate cells
             const tr = document.createElement('tr');
 
             // Add original data cells
@@ -123,15 +123,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 
-    // Copy button functionality
-    copyButton.addEventListener('click', function() {
-        const totalCGRText = duplicateTotalCGR.innerText;
-        navigator.clipboard.writeText(totalCGRText).then(() => {
-            // Success: Text copied to clipboard, but no alert/notification
-        }).catch(err => {
-            console.error('Could not copy text: ', err);
-        });
+// Copy button functionality
+copyButton.addEventListener('click', function() {
+    const totalCGRText = duplicateTotalCGR.innerText;
+    navigator.clipboard.writeText(totalCGRText).then(() => {
+        // Success: Text copied to clipboard, but no alert/notification
+    }).catch(err => {
+        console.error('Could not copy text: ', err);
     });
+});
 
 
     // Reset button functionality
