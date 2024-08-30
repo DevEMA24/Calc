@@ -8,41 +8,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
-        const rows = pastedData.split('\n').map(row => row.trim());
-        
+        const rows = pastedData.split('\n');
+
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            // Split by tab, trim each cell, and filter out empty cells
-            const cells = row.split('\t').map(cell => cell.trim()).filter(cell => cell !== '');
-            
-            if (cells.length < 5) return; // Skip rows with insufficient data
+            const cells = row.split('\t'); // Split by tab to separate cells
+
+            // Clean up extra spaces and tabs in Details column
+            cells[4] = cells[4]?.trim().replace(/\s+/g, '');
 
             const tr = document.createElement('tr');
 
             // Add original data cells
-            cells.forEach((cell, index) => {
-                if (index < 5) { // Only add the first 5 columns
-                    const td = document.createElement('td');
-                    td.textContent = cell;
-                    tr.appendChild(td);
-                }
+            cells.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell.trim();
+                tr.appendChild(td);
             });
 
             // Generate Identifier (I) column
-            const details = cells[4] || '';
+            const details = cells[4]?.trim();
             const identifierCell = document.createElement('td');
             let identifier = "-";
-            const firstSpace = details.indexOf(' ');
-            if (firstSpace !== -1) {
-                identifier = details.substring(0, firstSpace);
+            if (details) {
+                const firstSpaceIndex = details.indexOf(" ");
+                if (firstSpaceIndex !== -1) {
+                    identifier = details.substring(0, firstSpaceIndex);
+                }
             }
             identifierCell.textContent = identifier;
-            identifierCell.style.display = 'none'; // Hide this column
             tr.appendChild(identifierCell);
 
             // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = cells[1]?.replace(/[^0-9.-]+/g, "") || '';
+            const amount1Text = cells[1]?.trim().replace(/[^0-9.-]+/g, "");
             const wmPpvCell = document.createElement('td');
             let wmPpv = "-";
 
@@ -56,14 +55,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             wmPpvCell.textContent = wmPpv;
-            wmPpvCell.style.display = 'none'; // Hide this column
             tr.appendChild(wmPpvCell);
 
             salesData.appendChild(tr);
         });
 
-        calculateSales();
-        triggerPulse();
+        calculateSales(); // Recalculate totals after pasting
+        triggerPulse(); // Trigger the pulse effect
     });
 
     function calculateSales() {
@@ -76,15 +74,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = salesData.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const amount3 = parseFloat(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, "")) || 0;
-            const identifier = row.cells[5]?.textContent;
-            const wmPpv = row.cells[6]?.textContent;
+            const amount3 = parseFloat(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, "")) || 0; // Amount 3
+            const identifier = row.cells[5]?.textContent; // Identifier (I)
+            const wmPpv = row.cells[6]?.textContent; // WM/PPV (J)
 
+            // Calculate CGR Sales
             if (identifier === 'Payment' && wmPpv === '-') {
                 messageSales += amount3;
-            } else if (identifier === 'Tip') {
+            }
+
+            // Calculate Tip Sales
+            if (identifier === 'Tip') {
                 tipSales += amount3;
-            } else if (identifier === 'Payment' && wmPpv === 'WM') {
+            }
+
+            // Calculate Non-CGR Sales
+            if (identifier === 'Payment' && wmPpv === 'WM') {
                 wmSales += amount3;
             } else if (identifier === 'Payment' && wmPpv === 'PPV') {
                 ppvSales += amount3;
@@ -97,18 +102,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalNonCGR = wmSales + ppvSales + postSales;
         const totalSales = totalCGR + totalNonCGR;
 
-        updateDisplays(messageSales, tipSales, totalCGR, wmSales, ppvSales, postSales, totalNonCGR, totalSales);
-    }
-
-    function updateDisplays(messageSales, tipSales, totalCGR, wmSales, ppvSales, postSales, totalNonCGR, totalSales) {
+        // Update the HTML elements with calculated values
         document.getElementById('messageSales').innerText = messageSales.toFixed(2);
         document.getElementById('tipSales').innerText = tipSales.toFixed(2);
         document.getElementById('totalCGR').innerText = totalCGR.toFixed(2);
+
         document.getElementById('wmSales').innerText = wmSales.toFixed(2);
         document.getElementById('ppvSales').innerText = ppvSales.toFixed(2);
         document.getElementById('postSales').innerText = postSales.toFixed(2);
         document.getElementById('totalNonCGR').innerText = totalNonCGR.toFixed(2);
+
         document.getElementById('totalSales').innerText = totalSales.toFixed(2);
+
+        // Update the duplicate Total CGR Sales element
         duplicateTotalCGR.innerText = totalCGR.toFixed(2);
     }
 
@@ -117,16 +123,18 @@ document.addEventListener('DOMContentLoaded', function() {
         cgrSection.classList.add('pulsing');
         setTimeout(() => {
             cgrSection.classList.remove('pulsing');
-        }, 3000);
+        }, 3000); // Pulsing effect duration (3 pulses)
     }
 
+    // Copy button functionality
     copyButton.addEventListener('click', function() {
         const totalCGRText = duplicateTotalCGR.innerText;
         navigator.clipboard.writeText(totalCGRText).then(() => {
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerText = 'Copied to clipboard!';
-            
+
+            // Append the notification within the duplicate Total CGR Sales section
             const duplicateSection = document.querySelector('.duplicate-total-cgr-section');
             duplicateSection.appendChild(notification);
 
@@ -137,13 +145,14 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 notification.classList.remove('show');
                 setTimeout(() => duplicateSection.removeChild(notification), 500);
-            }, 3000);
+            }, 3000); // Show the notification for 3 seconds
         }).catch(err => {
             console.error('Could not copy text: ', err);
         });
     });
 
+    // Reset button functionality
     resetButton.addEventListener('click', function() {
-        location.reload();
+        location.reload(); // This will refresh the page
     });
 });
