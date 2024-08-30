@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const duplicateTotalCGR = document.getElementById('duplicateTotalCGR');
     const copyButton = document.getElementById('copyButton');
 
+    function sanitizeData(data) {
+        return data.replace(/\s+/g, ' ').trim(); // Replace multiple spaces or tabs with a single space and trim
+    }
+
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
         const rows = pastedData.split('\n').filter(row => row.trim() !== '');
@@ -13,14 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            let cells = row.split('\t').map(cell => cell.replace(/\s+/g, ' ').trim()); // Clean up spaces and tabs
+            let cells = row.split('\t').map(cell => sanitizeData(cell)); // Clean up spaces and tabs
 
-            // Ensure the row has at least 5 cells (to cover 'Details' and potential hidden columns)
-            if (cells.length < 5) return;
+            if (cells.length < 5) {
+                // Log the problem for debugging purposes.
+                console.error('Invalid row format:', cells);
+                return; // Skip invalid rows
+            }
 
             const tr = document.createElement('tr');
 
-            // Add original data cells
             for (let i = 0; i < 4; i++) {
                 const td = document.createElement('td');
                 td.textContent = cells[i];
@@ -31,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const details = cells[4];
             const identifierCell = document.createElement('td');
             let identifier = "-";
-            if (details && details.trim()) {
+            if (details) {
                 const firstWord = details.split(" ")[0];
                 identifier = firstWord.trim();
             }
@@ -74,9 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = salesData.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const amount3 = parseFloat(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, "").trim()) || 0; // Amount 3
-            const identifier = row.cells[5]?.textContent.trim(); // Identifier (I)
-            const wmPpv = row.cells[6]?.textContent.trim(); // WM/PPV (J)
+            const amount3 = parseFloat(sanitizeData(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, ""))) || 0; // Amount 3
+            const identifier = sanitizeData(row.cells[5]?.textContent); // Identifier (I)
+            const wmPpv = sanitizeData(row.cells[6]?.textContent); // WM/PPV (J)
 
             // Calculate CGR Sales
             if (identifier === 'Payment' && wmPpv === '-') {
