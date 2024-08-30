@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const details = cells[4];
             const identifierCell = document.createElement('td');
             let identifier = "-";
-            if (details) {
+            if (details && details.trim()) {
                 const firstSpaceIndex = details.indexOf(" ");
                 if (firstSpaceIndex !== -1) {
-                    identifier = details.substring(0, firstSpaceIndex);
+                    identifier = details.substring(0, firstSpaceIndex).trim();
                 }
             }
             identifierCell.textContent = identifier;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tr.appendChild(identifierCell);
 
             // Generate WM/PPV (J) column based on Amount 1
-            const amount1Text = cells[1]?.replace(/[^0-9.-]+/g, "");
+            const amount1Text = cells[1]?.replace(/[^0-9.-]+/g, "").trim();
             const wmPpvCell = document.createElement('td');
             let wmPpv = "-";
 
@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = salesData.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const amount3 = parseFloat(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, "")) || 0; // Amount 3
-            const identifier = row.cells[5]?.textContent; // Identifier (I)
-            const wmPpv = row.cells[6]?.textContent; // WM/PPV (J)
+            const amount3 = parseFloat(row.cells[3]?.textContent.replace(/[^0-9.-]+/g, "").trim()) || 0; // Amount 3
+            const identifier = row.cells[5]?.textContent.trim(); // Identifier (I)
+            const wmPpv = row.cells[6]?.textContent.trim(); // WM/PPV (J)
 
             // Calculate CGR Sales
             if (identifier === 'Payment' && wmPpv === '-') {
