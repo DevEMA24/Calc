@@ -9,26 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
     pasteButton.addEventListener('click', function() {
         const pastedData = pasteArea.value.trim();
         const rows = pastedData.split('\n');
-
+        
         salesData.innerHTML = ''; // Clear any existing rows
 
         rows.forEach((row) => {
-            const cells = row.split('\t'); // Split by tab to separate cells
-
-            // Clean up extra spaces and tabs in Details column
-            cells[4] = cells[4]?.trim().replace(/\s+/g, '');
-
+            // Split by tab, but limit to 5 splits to keep the description intact
+            const cells = row.split('\t', 5);
             const tr = document.createElement('tr');
 
-            // Add original data cells
-            cells.forEach(cell => {
+            // Trim each cell and remove any trailing tabs, carriage returns, or line feeds
+            cells.forEach((cell, index) => {
                 const td = document.createElement('td');
-                td.textContent = cell.trim();
+                td.textContent = cell.trim().replace(/[\t\r\n]+$/, '');
                 tr.appendChild(td);
             });
 
             // Generate Identifier (I) column
-            const details = cells[4]?.trim();
+            const details = cells[4]?.trim().replace(/[\t\r\n]+$/, '');
             const identifierCell = document.createElement('td');
             let identifier = "-";
             if (details) {
@@ -133,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerText = 'Copied to clipboard!';
-
+            
             // Append the notification within the duplicate Total CGR Sales section
             const duplicateSection = document.querySelector('.duplicate-total-cgr-section');
             duplicateSection.appendChild(notification);
