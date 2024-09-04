@@ -156,12 +156,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const toggleTableButton = document.getElementById('toggleTableButton');
 const tableContainer = document.querySelector('.table-container');
+const horizontalSections = document.querySelector('.horizontal-sections');
 const toggleIcon = document.getElementById('toggleIcon');
 
 toggleTableButton.addEventListener('click', () => {
-    const isTableVisible = tableContainer.style.display !== 'none';
-    tableContainer.style.display = isTableVisible ? 'none' : 'block';
+    const isTableVisible = getComputedStyle(tableContainer).display !== 'none';
+    const isSectionsVisible = getComputedStyle(horizontalSections).display !== 'none';
+
+    // Toggle both the table and the horizontal sections
+    if (isTableVisible || isSectionsVisible) {
+        tableContainer.style.display = 'none';
+        horizontalSections.style.display = 'none';
+    } else {
+        tableContainer.style.display = 'block';
+        horizontalSections.style.display = 'flex';
+    }
+
     toggleIcon.classList.toggle('expanded'); // Toggle class for CSS styling
-    toggleTableButton.querySelector('span').textContent = isTableVisible ? 'Show Details' : 'Hide Details';
+    toggleTableButton.querySelector('span').textContent = isTableVisible || isSectionsVisible ? 'Show Details' : 'Hide Details';
 });
 
