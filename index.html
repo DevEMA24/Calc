@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>CGR and Non-CGR Sales Calculator</h1>
+        <h1>Calculate Your Chat Sales</h1>
 
         <div class="table-section">
             <textarea id="pasteArea" placeholder="Paste your Infloww data here..."></textarea>
@@ -48,7 +48,13 @@
                 </div>
             </div>
 
-            <div class="table-container">
+            <button id="toggleTableButton" class="toggle-button">
+                <span>Show Details</span>
+                <div id="toggleIcon" class="expand-icon"></div> <!-- This will be styled with CSS -->
+            </button>
+            
+
+            <div class="table-container" style="display: none;"> <!-- Initially hidden -->
                 <table id="salesData">
                     <thead>
                         <tr>
