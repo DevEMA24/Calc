@@ -209,4 +209,36 @@ p {
     visibility: visible;
 }
 
+.toggle-button {
+    display: flex;
+    align-items: center; /* Vertically center content */
+    background-color: #389FBC;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Space before the table */
+    transition: background-color 0.3s ease;
+    position: relative; /* For absolute positioning of icon */
+}
 
+.toggle-button span {
+    margin-right: 10px; /* Space between text and icon */
+}
+
+.expand-icon {
+    width: 10px; /* Width of the arrow */
+    height: 10px; /* Height of the arrow */
+    border-right: 2px solid white; /* Right part of the arrow */
+    border-bottom: 2px solid white; /* Bottom part of the arrow */
+    transform: rotate(45deg); /* Rotate arrow to point down */
+    transition: transform 0.3s ease;
+    margin-left: auto; /* Push icon to the right edge */
+    margin-right: 0; /* Ensure no extra space on the right */
+}
+
+.expand-icon.expanded {
+    transform: rotate(-135deg); /* Rotate arrow to point up when expanded */
+}
