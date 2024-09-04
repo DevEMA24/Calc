@@ -153,3 +153,15 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload(); // This will refresh the page
     });
 });
+
+const toggleTableButton = document.getElementById('toggleTableButton');
+const tableContainer = document.querySelector('.table-container');
+const toggleIcon = document.getElementById('toggleIcon');
+
+toggleTableButton.addEventListener('click', () => {
+    const isTableVisible = tableContainer.style.display !== 'none';
+    tableContainer.style.display = isTableVisible ? 'none' : 'block';
+    toggleIcon.classList.toggle('expanded'); // Toggle class for CSS styling
+    toggleTableButton.querySelector('span').textContent = isTableVisible ? 'Show Details' : 'Hide Details';
+});
+
