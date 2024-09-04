@@ -222,6 +222,7 @@ p {
     margin-bottom: 10px; /* Space before the table */
     transition: background-color 0.3s ease;
     position: relative; /* For absolute positioning of icon */
+    margin-top:20px;
 }
 
 .toggle-button span {
@@ -241,4 +242,9 @@ p {
 
 .expand-icon.expanded {
     transform: rotate(-135deg); /* Rotate arrow to point up when expanded */
+}
+
+.horizontal-sections,
+.table-container {
+    display: none; /* Hide these sections initially */
 }
