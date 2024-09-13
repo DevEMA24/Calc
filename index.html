@@ -13,14 +13,14 @@
 
         <div class="table-section">
             <textarea id="pasteArea" placeholder="Paste your Infloww data here..."></textarea>
-            <button id="pasteButton">Calculate Sales</button>
+            <button id="pasteButton" class="blue-button">Calculate Sales</button>
             <button id="resetButton">Reset</button>
 
             <!-- Duplicate Total CGR Sales Section -->
             <div class="duplicate-total-cgr-section">
                 <p class="duplicate-total-cgr-txt">
                     Total CGR Sales: <span id="duplicateTotalCGR">0</span>
-                    <button id="copyButton" class="copy-button">Copy</button>
+                    <button id="copyButton" class="copy-button blue-button">Copy</button>
                 </p>
                 <div class="description">Copy the Total CGR Sales Number and click on Next Section.</div>
             </div>
@@ -50,11 +50,10 @@
 
             <button id="toggleTableButton" class="toggle-button">
                 <span>Show Details</span>
-                <div id="toggleIcon" class="expand-icon"></div> <!-- This will be styled with CSS -->
+                <div id="toggleIcon" class="expand-icon"></div>
             </button>
-            
 
-            <div class="table-container" style="display: none;"> <!-- Initially hidden -->
+            <div class="table-container" style="display: none;">
                 <table id="salesData">
                     <thead>
                         <tr>
