@@ -9,53 +9,67 @@ body {
 
 /* Container styles */
 .container {
-    max-width: 900px; /* Adjusted width for better readability */
+    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #2c2c2c; /* Darker container background */
-    border-radius: 15px; /* Increased border radius for a softer look */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    background-color: #2c2c2c;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* Header styles */
 h1 {
     text-align: center;
-    color: #ffffff; /* Pure white for the title */
+    color: #ffffff;
     margin-bottom: 30px;
     font-size: 24px;
 }
 
 /* Textarea styles */
 textarea {
-    width: calc(100% - 30px); /* Ensure it fits within the container, accounting for padding */
+    width: calc(100% - 30px);
     height: 100px;
     padding: 15px;
     border-radius: 10px;
     border: 1px solid #444;
-    background-color: #3a3a3a; /* Darker textarea background */
+    background-color: #3a3a3a;
     color: #f0f0f0;
     margin-bottom: 20px;
     font-family: inherit;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
 }
 
+/* Default button styles */
 button {
-    background-color: #389FBC; /* Set the background color */
-    color: #fff; /* Set the text color to white */
     padding: 12px 25px;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Add some shadow */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-button:hover {
-    background-color: #2c7d93; /* Slightly darker shade on hover */
+/* Blue buttons */
+button.blue-button, .copy-button {
+    background-color: #389FBC;
+    color: #fff;
 }
 
+button.blue-button:hover, .copy-button:hover {
+    background-color: #2c7d93;
+}
+
+/* Grey buttons */
+#resetButton, .toggle-button {
+    background-color: #555555;
+    color: #fff;
+}
+
+#resetButton:hover, .toggle-button:hover {
+    background-color: #666666;
+}
 
 /* Duplicate Total CGR Sales Section */
 .duplicate-total-cgr-section {
@@ -64,19 +78,18 @@ button:hover {
     padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Matching shadow style */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .duplicate-total-cgr-txt {
     color: #389fbc !important;
     font-weight: bold;
-    font-size: 20px; /* Larger font size */
+    font-size: 20px;
 }
 
 .duplicate-total-cgr-section.pulsing {
-    animation: pulse 0.5s ease-out 3; /* Trigger pulse animation 3 times */
+    animation: pulse 0.5s ease-out 3;
 }
-
 
 .duplicate-total-cgr-section .description {
     font-size: 16px;
@@ -92,7 +105,7 @@ button:hover {
         opacity: 1;
     }
     50% {
-        transform: scale(1.15); /* Larger pulse scale */
+        transform: scale(1.15);
         opacity: 0.7;
     }
     100% {
@@ -119,42 +132,42 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #3a3a3a; /* Darker background for table */
+    background-color: #3a3a3a;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 th, td {
     padding: 12px 15px;
-    border: 1px solid #555; /* Darker border color */
+    border: 1px solid #555;
     text-align: left;
 }
 
 th {
-    background-color: #444; /* Darker header background */
-    color: #fff; /* Light text color */
+    background-color: #444;
+    color: #fff;
     font-weight: bold;
 }
 
 td {
-    background-color: #2c2c2c; /* Darker background for cells */
-    color: #f0f0f0; /* Light text color */
+    background-color: #2c2c2c;
+    color: #f0f0f0;
 }
 
-/* Horizontal layout for CGR, Non-CGR, and Total Sales Sections */
+/* Horizontal layout for sections */
 .horizontal-sections {
     display: flex;
     justify-content: space-between;
-    gap: 20px; /* Space between each section */
-    margin-top: 20px; /* Space above the horizontal sections */
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .cgr-section, .non-cgr-section, .total-sales-section {
     flex: 1;
     padding: 20px;
     border-radius: 10px;
-    background-color: #2c2c2c; /* Matching background color */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Consistent shadow */
+    background-color: #2c2c2c;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .cgr-section h2, .non-cgr-section h2, .total-sales-section h2 {
@@ -165,13 +178,13 @@ td {
 
 .cgr-section p, .non-cgr-section p, .total-sales-section p {
     font-size: 16px;
-    color: #d1d1d1; /* Softer light color for text */
+    color: #d1d1d1;
 }
 
 p {
     font-size: 16px;
     margin-bottom: 10px;
-    color: #d1d1d1; /* Softer light color for text */
+    color: #d1d1d1;
 }
 
 /* Copy button styles */
@@ -179,19 +192,13 @@ p {
     margin-left: 10px;
     padding: 5px 10px;
     font-size: 14px;
-    background-color: #389FBC;
-    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.copy-button:hover {
-    background-color: #2c7d93;
-}
-
-/* Notification within the duplicate Total CGR Sales section */
+/* Notification styles */
 .notification {
     background-color: #389FBC;
     color: #fff;
@@ -200,7 +207,7 @@ p {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
-    margin-top: 10px; /* Adds space between the text and the notification */
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -209,42 +216,47 @@ p {
     visibility: visible;
 }
 
+/* Toggle button styles */
 .toggle-button {
     display: flex;
-    align-items: center; /* Vertically center content */
-    background-color: #389FBC;
+    align-items: center;
+    background-color: #555555;
     color: #fff;
     padding: 10px 20px;
     font-size: 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-bottom: 10px; /* Space before the table */
+    margin-bottom: 10px;
     transition: background-color 0.3s ease;
-    position: relative; /* For absolute positioning of icon */
-    margin-top:20px;
+    position: relative;
+    margin-top: 20px;
+}
+
+.toggle-button:hover {
+    background-color: #666666;
 }
 
 .toggle-button span {
-    margin-right: 10px; /* Space between text and icon */
+    margin-right: 10px;
 }
 
 .expand-icon {
-    width: 10px; /* Width of the arrow */
-    height: 10px; /* Height of the arrow */
-    border-right: 2px solid white; /* Right part of the arrow */
-    border-bottom: 2px solid white; /* Bottom part of the arrow */
-    transform: rotate(45deg); /* Rotate arrow to point down */
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
     transition: transform 0.3s ease;
-    margin-left: auto; /* Push icon to the right edge */
-    margin-right: 0; /* Ensure no extra space on the right */
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .expand-icon.expanded {
-    transform: rotate(-135deg); /* Rotate arrow to point up when expanded */
+    transform: rotate(-135deg);
 }
 
 .horizontal-sections,
 .table-container {
-    display: none; /* Hide these sections initially */
+    display: none;
 }
